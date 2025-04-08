@@ -16,7 +16,14 @@ const io = socketIo(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
-  }
+  },
+  pingTimeout: 60000,
+  pingInterval: 25000,
+  transports: ['websocket'],
+  upgrade: false,
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000
 });
 
 // Middleware
@@ -76,9 +83,13 @@ io.on('connection', (socket) => {
     socket.join(roomId);
     
     socket.emit('roomCreated', { roomId, room: getRoomInfo(rooms[roomId]) });
-    io.emit('roomsUpdated', getPublicRooms());
+    
+    // Asegurar que todos los clientes reciban la actualización de salas
+    const publicRooms = getPublicRooms();
+    io.emit('roomsUpdated', publicRooms);
     
     console.log(`Sala creada: ${roomId} por ${user.username}`);
+    console.log('Emitiendo actualización de salas:', publicRooms);
   });
 
   // Unirse a una sala
@@ -252,13 +263,15 @@ function getRoomInfo(room) {
 }
 
 function getPublicRooms() {
-  return Object.values(rooms)
+  const publicRooms = Object.values(rooms)
     .filter(room => !room.isPrivate && room.status === 'waiting' && room.players.length < 2)
     .map(room => ({
       id: room.id,
       name: room.name,
       players: room.players.length
     }));
+  console.log('Salas públicas disponibles:', publicRooms);
+  return publicRooms;
 }
 
 function initializeGame(players) {
@@ -327,7 +340,7 @@ function processShot(gameState, targetPlayerIndex, x, y) {
 }
 
 // Puerto y arranque del servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Servidor ejecutándose en el puerto ${PORT}`);
 });
