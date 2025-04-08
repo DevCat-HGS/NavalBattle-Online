@@ -15,10 +15,10 @@ export default defineConfig(({ mode }) => {
       'process.env.VITE_API_URL': JSON.stringify(apiUrl),
       'process.env.VITE_WS_URL': JSON.stringify(wsUrl)
     },
-    server: isDev ? {
+    server: {
       cors: true,
       host: true,
-      proxy: {
+      proxy: isDev ? {
         '/api': {
           target: apiUrl,
           changeOrigin: true,
@@ -31,8 +31,8 @@ export default defineConfig(({ mode }) => {
           ws: true,
           secure: false
         },
-      },
-    } : {},
+      } : undefined,
+    },
     build: {
       outDir: 'dist',
       sourcemap: false,
