@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     server: {
       cors: true,
       host: true,
-      proxy: isDev ? {
+      proxy: {
         '/api': {
           target: apiUrl,
           changeOrigin: true,
@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
           ws: true,
           secure: false
         },
-      } : undefined,
+      }, undefined,
     },
     build: {
       outDir: 'dist',
