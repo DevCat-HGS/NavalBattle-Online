@@ -22,16 +22,16 @@ export default api;
 
 // Funciones de ayuda para endpoints comunes
 export const authService = {
-  login: (username, password) => api.post('/api/auth/login', { username, password }),
-  register: (username, password) => api.post('/api/auth/register', { username, password }),
-  getUser: (token) => api.get('/api/auth/user', {
+  login: (username, password) => api.post('/auth/login', { username, password }),
+  register: (username, password) => api.post('/auth/register', { username, password }),
+  getUser: (token) => api.get('/auth/user', {
     headers: { 'x-auth-token': token }
   }),
 };
 
 export const roomsService = {
-  getPublicRooms: () => api.get('/api/rooms/public'),
-  createRoom: (data) => api.post('/api/rooms', data),
-  getRoomInfo: (roomId) => api.get(`/api/rooms/${roomId}`),
-  joinRoom: (roomId, data) => api.post(`/api/rooms/${roomId}/join`, data),
+  getPublicRooms: () => api.get('/rooms/public'),
+  createRoom: (data) => api.post('/rooms', data),
+  getRoomInfo: (roomId) => api.get(`/rooms/${roomId}`),
+  joinRoom: (roomId, data) => api.post(`/rooms/${roomId}/join`, data),
 };
