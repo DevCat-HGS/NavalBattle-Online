@@ -8,6 +8,8 @@
   to = "https://game-battleship-production.up.railway.app/:splat"
   status = 200
   force = true
+  headers = {Access-Control-Allow-Origin = "*"}
+  rewrite = {path = ":splat"}
 
 [[redirects]]
   from = "/socket.io/*"
