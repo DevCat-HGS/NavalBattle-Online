@@ -8,17 +8,22 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     base: '/',
     server: {
+      cors: {
+        origin: true,
+        credentials: true
+      },
       proxy: {
         '/api': {
           target: env.VITE_API_URL || 'https://game-battleship-production.up.railway.app',
           changeOrigin: true,
-          secure: false,
+          secure: true,
+          ws: false
         },
         '/socket.io': {
-          target: env.VITE_API_URL || 'https://game-battleship-production.up.railway.app',
+          target: env.VITE_WS_URL || 'wss://game-battleship-production.up.railway.app',
           changeOrigin: true,
           ws: true,
-          secure: false,
+          secure: true
         },
       },
     },

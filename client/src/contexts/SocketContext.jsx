@@ -15,14 +15,15 @@ export const SocketProvider = ({ children }) => {
     // Conectar socket solo si el usuario está autenticado
     if (currentUser) {
       // Crear conexión al servidor
-      const socketInstance = io(import.meta.env.VITE_API_URL || 'https://game-battleship-production.up.railway.app', {
-        transports: ['websocket', 'polling'],
+      const socketInstance = io(import.meta.env.VITE_WS_URL || 'wss://game-battleship-production.up.railway.app', {
+        transports: ['websocket'],
         autoConnect: true,
         withCredentials: true,
         forceNew: true,
         reconnection: true,
         reconnectionAttempts: 5,
-        reconnectionDelay: 1000
+        reconnectionDelay: 1000,
+        path: '/socket.io'
       });
 
       // Eventos de conexión
