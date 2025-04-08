@@ -15,9 +15,10 @@ export const SocketProvider = ({ children }) => {
     // Conectar socket solo si el usuario está autenticado
     if (currentUser) {
       // Crear conexión al servidor
-      const socketInstance = io('/', {
-        transports: ['websocket'],
-        autoConnect: true
+      const socketInstance = io('https://game-battleship-production.up.railway.app', {
+         transports: ['websocket'],
+        autoConnect: true,
+        withCredentials: true
       });
 
       // Eventos de conexión
