@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-// Simulación de base de datos para salas (en una aplicación real, usaríamos una base de datos)
-let rooms = [];
+// Referencia al objeto de salas del servidor principal
+const { rooms } = require('../server');
 
 // Obtener todas las salas públicas
 router.get('/public', (req, res) => {
