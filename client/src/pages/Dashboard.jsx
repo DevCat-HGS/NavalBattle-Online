@@ -330,7 +330,8 @@ const Dashboard = () => {
     const fetchPublicRooms = async () => {
       try {
         const res = await roomsService.getPublicRooms();
-        setPublicRooms(res.data);
+        console.log('Respuesta de salas públicas:', res);
+        setPublicRooms(res.data || []);
       } catch (err) {
         console.error('Error al cargar salas:', err);
       }
@@ -528,7 +529,7 @@ const Dashboard = () => {
                   <RoomItem key={room.id}>
                     <div>
                       <RoomName>{room.name}</RoomName>
-                      <RoomPlayers>Jugadores: {room.players}/2</RoomPlayers>
+                      <RoomPlayers>Jugadores: {Array.isArray(room.players) ? room.players.length : room.players}/2</RoomPlayers>
                     </div>
                     <JoinButton onClick={() => handleJoinRoom(room)}>
                       Unirse

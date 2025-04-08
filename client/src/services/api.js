@@ -35,3 +35,15 @@ export const roomsService = {
   getRoomInfo: (roomId) => api.get(`/api/rooms/${roomId}`),
   joinRoom: (roomId, data) => api.post(`/api/rooms/${roomId}/join`, data),
 };
+
+// Interceptor para depurar respuestas
+api.interceptors.response.use(
+  (response) => {
+    console.log('API Response:', response.config.url, response.data);
+    return response;
+  },
+  (error) => {
+    console.error('API Error:', error.config?.url, error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
