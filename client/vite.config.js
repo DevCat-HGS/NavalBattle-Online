@@ -5,21 +5,28 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const isDev = mode === 'development';
+  const apiUrl = env.VITE_API_URL || 'https://game-battleship-production.up.railway.app';
+  const wsUrl = env.VITE_WS_URL || 'wss://game-battleship-production.up.railway.app';
+  
   return {
     plugins: [react()],
     base: '/',
+    define: {
+      'process.env.VITE_API_URL': JSON.stringify(apiUrl),
+      'process.env.VITE_WS_URL': JSON.stringify(wsUrl)
+    },
     server: isDev ? {
       cors: true,
       host: true,
       proxy: {
         '/api': {
-          target: env.VITE_API_URL || 'https://game-battleship-production.up.railway.app',
+          target: apiUrl,
           changeOrigin: true,
           secure: false,
           ws: true
         },
         '/socket.io': {
-          target: env.VITE_WS_URL || 'wss://game-battleship-production.up.railway.app',
+          target: wsUrl,
           changeOrigin: true,
           ws: true,
           secure: false
