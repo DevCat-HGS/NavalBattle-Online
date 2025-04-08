@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useSocket } from '../contexts/SocketContext';
 import styled from 'styled-components';
-import axios from 'axios';
+import { roomsService } from '../services/api';
 
 // Componentes estilizados
 const DashboardContainer = styled.div`
@@ -329,7 +329,7 @@ const Dashboard = () => {
     // Cargar salas públicas al inicio
     const fetchPublicRooms = async () => {
       try {
-        const res = await axios.get('/api/rooms/public');
+        const res = await roomsService.getPublicRooms();
         setPublicRooms(res.data);
       } catch (err) {
         console.error('Error al cargar salas:', err);

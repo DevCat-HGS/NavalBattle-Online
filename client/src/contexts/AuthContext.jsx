@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { authService } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -22,13 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async (token) => {
     try {
-      const config = {
-        headers: {
-          'x-auth-token': token
-        }
-      };
-
-      const res = await axios.get('/api/auth/user', config);
+      const res = await authService.getUser(token);
       setCurrentUser(res.data.user);
       setLoading(false);
     } catch (err) {
@@ -41,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (username, password) => {
     try {
       setError('');
-      const res = await axios.post('/api/auth/register', { username, password });
+      const res = await authService.register(username, password);
       localStorage.setItem('token', res.data.token);
       setCurrentUser(res.data.user);
       return res.data.user;
@@ -54,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       setError('');
-      const res = await axios.post('/api/auth/login', { username, password });
+      const res = await authService.login(username, password);
       localStorage.setItem('token', res.data.token);
       setCurrentUser(res.data.user);
       return res.data.user;
